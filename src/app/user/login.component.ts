@@ -3,23 +3,34 @@ import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './auth.service';
+import * as fromUser from '../user/state/user.reducer';
+import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
   errorMessage: string;
-
+  maskUserNameSubscription: Subscription;
   maskUserName: boolean;
 
   constructor(private authService: AuthService,
-              private router: Router) {
+    private router: Router,
+    private store: Store<fromUser.State>) {
   }
 
   ngOnInit(): void {
+    this.maskUserNameSubscription = this.store
+      .pipe(select(fromUser.getMaskUserName))
+      .subscribe(mask => this.maskUserName = mask)
+  }
 
+  ngDestroy() {
+    this.maskUserNameSubscription.unsubscribe();
   }
 
   cancel(): void {
@@ -27,7 +38,10 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(value: boolean): void {
-    this.maskUserName = value;
+    this.store.dispatch({
+      type: "TOGGLE_MASK_USERNAME",
+      payload: value
+    });
   }
 
   login(loginForm: NgForm): void {

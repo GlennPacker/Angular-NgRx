@@ -2,14 +2,14 @@ import { Product } from "../product";
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-export interface State extends fromRoot.State {
-  products: ProductState;
-}
-
 export interface ProductState {
   showProductCode: boolean;
   currentProduct: Product;
   products: Product[];
+}
+
+export interface State extends fromRoot.State {
+  products: ProductState;
 }
 
 const initialState: ProductState = {
