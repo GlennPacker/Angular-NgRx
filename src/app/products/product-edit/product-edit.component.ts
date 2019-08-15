@@ -8,6 +8,7 @@ import { NumberValidators } from '../../shared/number.validator';
 import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.actions';
 import { Store, select } from '@ngrx/store';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'pm-product-edit',
@@ -25,6 +26,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
+  componentActive: boolean = true;
 
   constructor(private fb: FormBuilder,
     private productService: ProductService,
@@ -62,9 +64,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       description: ''
     });
 
-    // TODO: Unsub
     this.store
-      .pipe(select(fromProduct.getCurrentProduct))
+      .pipe(select(fromProduct.getCurrentProduct), takeWhile(() => this.componentActive))
       .subscribe(product => this.displayProduct(product));
 
 
@@ -75,6 +76,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.componentActive = false;
   }
 
   // Also validate on blur
