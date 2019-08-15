@@ -79,6 +79,18 @@ export function reducer(state = initialState, action: ProductActions): ProductSt
         ...state,
         currentProductId: null
       }
+    case ProductActionTypes.DeleteProductFail:
+      return {
+        ...state,
+        currentProductId: null,
+        error: action.payload
+      }
+    case ProductActionTypes.DeleteProductSuccess:
+      return {
+        ...state,
+        currentProductId: null,
+        products: state.products.filter(r => r.id !== action.payload.id)
+      }
     case ProductActionTypes.InitializeCurrentProduct:
       return {
         ...state,
@@ -105,6 +117,22 @@ export function reducer(state = initialState, action: ProductActions): ProductSt
       return {
         ...state,
         products: [],
+        error: action.payload
+      }
+    }
+    case ProductActionTypes.UpdateProductSuccess: {
+      return {
+        ...state,
+        products: [...
+          state.products.map(item => { return item.id === action.payload.id ? action.payload : item })
+        ],
+        currentProductId: action.payload.id,
+        error: ''
+      }
+    }
+    case ProductActionTypes.UpdateProductFail: {
+      return {
+        ...state,
         error: action.payload
       }
     }

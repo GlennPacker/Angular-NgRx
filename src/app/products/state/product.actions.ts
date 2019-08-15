@@ -6,16 +6,25 @@ export enum ProductActionTypes {
     AddProductSuccess = '[Product] Add Product Success',
     AddProductFail = '[Product] Add Product Fail',
     ClearCurrentProduct = '[Product] Clear Current Product',
+    DeleteProduct = '[Product] Delete',
+    DeleteProductSuccess = '[Product] Delete Success',
+    DeleteProductFail = '[Product] Delete Fail',
     InitializeCurrentProduct = '[Product] Initialize Current Product',
     Load = '[Product] Load',
     LoadSuccess = '[Product] Load Success',
     LoadFail = '[Product] Load Fail',
     ToggleProductCode = '[Product] Toggle Product Code',
     UpdateProduct = '[Product] Update',
-    UpdateProductSuccess = '[Product] Update',
-    UpdateProductFail = '[Product] Update',
+    UpdateProductSuccess = '[Product] Update Success',
+    UpdateProductFail = '[Product] Update Fail',
     SetCurrentProductId = "[Product] Set Current Product Id",
     SetCurrentProduct = "[Product] Set Current Product"
+}
+
+
+export class AddProduct implements Action {
+    readonly type = ProductActionTypes.AddProduct;
+    constructor(public payload: Product) { }
 }
 
 export class AddProductSuccess implements Action {
@@ -30,6 +39,21 @@ export class AddProductFail implements Action {
 
 export class ClearCurrentProduct implements Action {
     readonly type = ProductActionTypes.ClearCurrentProduct;
+}
+
+export class DeleteProduct implements Action {
+    readonly type = ProductActionTypes.DeleteProduct;
+    constructor(public payload: Product) { }
+}
+
+export class DeleteProductSuccess implements Action {
+    readonly type = ProductActionTypes.DeleteProductSuccess;
+    constructor(public payload: Product) { }
+}
+
+export class DeleteProductFail implements Action {
+    readonly type = ProductActionTypes.DeleteProductFail;
+    constructor(public payload: string) { }
 }
 
 export class InitializeCurrentProduct implements Action {
@@ -79,15 +103,20 @@ export class UpdateProductSuccess implements Action {
     constructor(public payload: Product) { }
 }
 
-export type ProductActions = ClearCurrentProduct
+export type ProductActions =
+    AddProduct
+    | AddProductFail
+    | AddProductSuccess
+    | ClearCurrentProduct
+    | DeleteProduct
+    | DeleteProductFail
+    | DeleteProductSuccess
     | InitializeCurrentProduct
     | Load
     | LoadFail
     | LoadSuccess
     | SetCurrentProduct
     | ToggleProductCode
-    | AddProductSuccess
-    | AddProductFail
     | UpdateProduct
     | UpdateProductFail
     | UpdateProductSuccess;
