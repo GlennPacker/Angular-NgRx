@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { SharedModule } from '../shared/shared.module';
-
-import { LoginComponent } from './login.component';
+import { LoginContainerComponent } from './containers/login/login-container.component';
+import { LoginComponent } from './components/login/login.component';
 
 /* NgRx */
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './state/user.reducer';
 
 const userRoutes: Routes = [
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginContainerComponent }
 ];
 
 @NgModule({
@@ -20,6 +19,7 @@ const userRoutes: Routes = [
     StoreModule.forFeature('users', reducer)
   ],
   declarations: [
+    LoginContainerComponent,
     LoginComponent
   ]
 })

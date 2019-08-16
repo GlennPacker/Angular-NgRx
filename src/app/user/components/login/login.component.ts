@@ -1,38 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-
-import { AuthService } from './auth.service';
-import * as fromUser from '../user/state/user.reducer';
-import { Store, select } from '@ngrx/store';
-import * as userActions from './state/user.actions'
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
+  selector: 'login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  @Input() maskUserName: boolean;
+  @Output() maskUserNameCheckChanged = new EventEmitter<boolean>();
   pageTitle = 'Log In';
   errorMessage: string;
-  maskUserName: boolean;
-  maskedUserNameSubscription: Subscription;
-
 
   constructor(private authService: AuthService,
     private router: Router,
-    private store: Store<fromUser.State>) {
-  }
-
-  ngOnInit(): void {
-    this.maskedUserNameSubscription = this.store
-      .pipe(select(fromUser.getMaskUserName))
-      .subscribe(mask => this.maskUserName = mask);
-  }
-
-  ngDestroy() {
-    this.maskedUserNameSubscription.unsubscribe();
+  ) {
   }
 
   cancel(): void {
@@ -40,7 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(value: boolean): void {
-    this.store.dispatch(new userActions.MaskUserName(value));
+    this.maskUserNameCheckChanged.emit(value)
   }
 
   login(loginForm: NgForm): void {
