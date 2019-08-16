@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from '../../product';
 import { GenericValidator } from '../../../shared/generic-validator';
@@ -7,7 +7,8 @@ import { NumberValidators } from '../../../shared/number.validator';
 @Component({
   selector: 'pm-product-edit',
   templateUrl: './product-edit.component.html',
-  styleUrls: ['./product-edit.component.css']
+  styleUrls: ['./product-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductEditComponent implements OnInit, OnChanges {
   @Input() product: Product;
